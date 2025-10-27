@@ -5,7 +5,7 @@ import { useState } from "react";
 import TaskItem from "@components/Task/TaskItem";
 
 // Import redux
-import { removeTask, updateTask } from "@store/slices/taskSlices";
+import { removeTask, updateTask, updateTasks } from "@store/slices/taskSlices";
 
 import { useAppDispatch, useAppSelector } from "@store/index";
 
@@ -16,27 +16,60 @@ const TaskListSection = () => {
 
   const [completeTaskAudio] = useState(new Audio("/audio/coin.wav"));
 
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+
+  const handleDragStart = (id: string) => {
+    setDraggingId(id);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, id: string) => {
+    e.preventDefault();
+    if (draggingId === null || draggingId === id) return;
+
+    const newItems = [...tasks];
+    const fromIndex = newItems.findIndex((item) => item.id === draggingId);
+    const toIndex = newItems.findIndex((item) => item.id === id);
+
+    // Move the dragged item
+    const [movedItem] = newItems.splice(fromIndex, 1);
+    newItems.splice(toIndex, 0, movedItem);
+
+    dispatch(updateTasks(newItems));
+  };
+
+  const handleDragEnd = () => {
+    setDraggingId(null);
+  };
+
   return (
     <div className="w-full flex flex-col gap-10 items-center">
       {tasks.map(({ name, points, description, id, isCompleted }) => {
         return (
-          <TaskItem
-            description={description}
-            name={name}
-            points={points}
-            isCompleted={isCompleted}
-            onClickDelete={() => {
-              dispatch(removeTask(id));
-            }}
+          <div
             key={id}
-            onUpdate={(values) => {
-              if (isCompleted !== values.isCompleted && values.isCompleted) {
-                completeTaskAudio.play();
-              }
+            draggable
+            onDragStart={() => handleDragStart(id)}
+            onDragOver={(e) => handleDragOver(e, id)}
+            onDragEnd={handleDragEnd}
+          >
+            <TaskItem
+              key={id}
+              description={description}
+              name={name}
+              points={points}
+              isCompleted={isCompleted}
+              onClickDelete={() => {
+                dispatch(removeTask(id));
+              }}
+              onUpdate={(values) => {
+                if (isCompleted !== values.isCompleted && values.isCompleted) {
+                  completeTaskAudio.play();
+                }
 
-              dispatch(updateTask({ description, id, ...values }));
-            }}
-          />
+                dispatch(updateTask({ description, id, ...values }));
+              }}
+            />
+          </div>
         );
       })}
     </div>

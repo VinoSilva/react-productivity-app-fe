@@ -54,9 +54,19 @@ const tasksSlice = createSlice({
       state.tasks = nonCompletedTasks;
       state.points += points;
     },
+    updateTasks: (state, action: PayloadAction<Task[]>) => {
+      state.tasks = action.payload;
+    },
   },
 });
 
-export const { addTask, removeTask, updateTask, clearAllTasks, submitTasks } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  removeTask,
+  updateTask,
+  clearAllTasks,
+  submitTasks,
+  updateTasks,
+} = tasksSlice.actions;
+
 export default tasksSlice.reducer;

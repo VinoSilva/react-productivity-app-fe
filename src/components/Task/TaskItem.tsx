@@ -44,7 +44,7 @@ const TaskItem = ({
             onUpdate({ isCompleted: e.target.checked, name, points });
           }}
         />
-        <Tooltip content={description} />
+        {description ? <Tooltip content={description} /> : <></>}
       </div>
       <div className="flex justify-between gap-5">
         <div className="flex w-full items-center">

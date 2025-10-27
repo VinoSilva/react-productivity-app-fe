@@ -6,7 +6,6 @@ import Button from "@components/shared/Button";
 
 // Import redux
 import { clearAllTasks, submitTasks } from "@store/slices/taskSlices";
-
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 const HeaderSection = () => {
@@ -28,7 +27,7 @@ const HeaderSection = () => {
         <span className="text-primary-red">{points}</span>{" "}
         {points > 1 ? "Points" : "Point"}{" "}
       </p>
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-5">
         <Button
           onClick={() => {
             dispatch(clearAllTasks());
