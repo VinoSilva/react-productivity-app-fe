@@ -44,7 +44,22 @@ const TaskItem = ({
             placeholder="Task name"
             className="full px-1 py-1"
           /> */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            <Tooltip content={"Is it a daily task?"}>
+              <img
+                onClick={() => {
+                  onUpdate({
+                    isCompleted,
+                    name,
+                    isDaily: !isDaily,
+                    points,
+                  });
+                }}
+                src={isDaily ? "/images/pin.png" : "/images/unpin.png"}
+                alt="pin icon"
+                className="scale-125 cursor-pointer"
+              />
+            </Tooltip>
             <Tooltip content={"Is it complete?"}>
               <Checkbox
                 checked={isCompleted}
@@ -58,21 +73,8 @@ const TaskItem = ({
                 }}
               />
             </Tooltip>
-            <Tooltip content={"Is it a daily task?"}>
-              <Checkbox
-                checked={isDaily}
-                onChange={(e) => {
-                  onUpdate({
-                    isCompleted,
-                    name,
-                    isDaily: e.target.checked,
-                    points,
-                  });
-                }}
-              />
-            </Tooltip>
           </div>
-          <p className="w-full">{name}</p>
+          <p className="w-full break-all">{name}</p>
           <div className="w-20 ml-4">
             <Tooltip content={"Points"}>
               <Input
