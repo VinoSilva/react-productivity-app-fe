@@ -35,18 +35,19 @@ const TaskItem = ({
   return (
     <div
       draggable
-      className="w-full md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
+      className="w-full md:min-w-xs md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
     >
       <div className="flex justify-between gap-5">
         <div className="flex w-full items-center">
-          <Input
+          {/* <Input
             onChange={(e) => {
               onUpdate({ isCompleted, name: e.target.value, isDaily, points });
             }}
             value={name}
             placeholder="Task name"
             className="full px-1 py-1"
-          />
+          /> */}
+          <p className="w-full">{name}</p>
           <div className="w-20 ml-4">
             <Tooltip content={"Points"}>
               <Input
@@ -91,7 +92,7 @@ const TaskItem = ({
                 points,
               });
             }}
-            label="Is it a daily task?"
+            label="Daily Task"
           />
         </div>
         <div className="flex gap-2">
