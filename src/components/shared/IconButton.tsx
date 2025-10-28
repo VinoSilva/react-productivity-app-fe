@@ -8,7 +8,7 @@ const IconButton = ({
     <button
       {...props}
       className={twMerge([
-        "cursor-pointer bg-primary-red text-white rounded-full border border-primary-red hover:bg-white hover:text-primary-red",
+        "cursor-pointer bg-primary-black text-white rounded-full border border-primary-black hover:bg-white hover:text-primary-black",
         className,
       ])}
     />

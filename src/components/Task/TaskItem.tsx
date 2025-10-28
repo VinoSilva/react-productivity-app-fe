@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa6";
 import IconButton from "@components/shared/IconButton";
 import Input from "@components/shared/Input";
 import Tooltip from "@components/shared/Tooltip";
-import { Checkbox } from "@components/shared/Checkbox";
+// import { Checkbox } from "@components/shared/Checkbox";
 import Confirm from "@components/shared/Confirm";
 
 interface TaskItemProps {
@@ -33,7 +33,19 @@ const TaskItem = ({
   isDaily,
 }: TaskItemProps) => {
   const elem = (
-    <div className="w-full md:min-w-md md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3">
+    <div
+      onDoubleClick={() => {
+        onUpdate({
+          isCompleted: !isCompleted,
+          name,
+          isDaily,
+          points,
+        });
+      }}
+      className={`w-full md:min-w-md md:max-w-md shadow-md shadow-primary-black ${
+        isCompleted ? "bg-primary-red" : "bg-white"
+      } cursor-pointer rounded-md border p-4 flex flex-col gap-3`}
+    >
       <div className="flex justify-between gap-5">
         <div className="flex gap-4 w-full items-center">
           {/* <Input
@@ -45,7 +57,9 @@ const TaskItem = ({
             className="full px-1 py-1"
           /> */}
           <div className="flex gap-2 items-center">
-            <Tooltip content={"Is it a daily task?"}>
+            <Tooltip
+              content={isDaily ? "It's a daily task" : "It's not a daily task"}
+            >
               <img
                 onClick={() => {
                   onUpdate({
@@ -57,10 +71,10 @@ const TaskItem = ({
                 }}
                 src={isDaily ? "/images/pin.png" : "/images/unpin.png"}
                 alt="pin icon"
-                className="scale-125 cursor-pointer"
+                className="scale-75 cursor-pointer"
               />
             </Tooltip>
-            <Tooltip content={"Is it complete?"}>
+            {/* <Tooltip content={"Is it complete?"}>
               <Checkbox
                 checked={isCompleted}
                 onChange={(e) => {
@@ -72,9 +86,15 @@ const TaskItem = ({
                   });
                 }}
               />
-            </Tooltip>
+            </Tooltip> */}
           </div>
-          <p className="w-full break-all">{name}</p>
+          <p
+            className={`w-full break-all wrap-break-word ${
+              isCompleted ? "text-white" : "text-primary-black"
+            }`}
+          >
+            {name}
+          </p>
           <div className="w-20 ml-4">
             <Tooltip content={"Points"}>
               <Input

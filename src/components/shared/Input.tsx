@@ -8,7 +8,7 @@ const Input = ({
     <input
       type="text"
       className={twMerge([
-        "w-full placeholder-gray-300 font-roboto  border border-primary-black rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-black focus:border-0",
+        "w-full placeholder-gray-300 font-roboto bg-white  border border-primary-black rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-black focus:border-0",
         className || "",
       ])}
       {...props}
