@@ -37,8 +37,38 @@ const TaskItem = ({
       draggable
       className="w-full md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
     >
+      <div className="flex justify-between gap-5">
+        <div className="flex w-full items-center">
+          <Input
+            onChange={(e) => {
+              onUpdate({ isCompleted, name: e.target.value, isDaily, points });
+            }}
+            value={name}
+            placeholder="Task name"
+            className="full px-1 py-1"
+          />
+          <div className="w-20 ml-4">
+            <Tooltip content={"Points"}>
+              <Input
+                type="number"
+                min={1}
+                value={points}
+                onChange={(e) => {
+                  onUpdate({
+                    isCompleted,
+                    name,
+                    points: parseInt(e.target.value),
+                    isDaily,
+                  });
+                }}
+                className="px-1 py-1"
+              />
+            </Tooltip>
+          </div>
+        </div>
+      </div>
       <div className="flex gap-4 justify-between items-start">
-        <div className="flex flex-col gap-4">
+        <div className="flex gap-2">
           <Checkbox
             checked={isCompleted}
             onChange={(e) => {
@@ -51,50 +81,21 @@ const TaskItem = ({
             }}
             label="Complete"
           />
-          <Tooltip content={"Is it a daily task"}>
-            <Checkbox
-              checked={isDaily}
-              onChange={(e) => {
-                onUpdate({
-                  isCompleted,
-                  name,
-                  isDaily: e.target.checked,
-                  points,
-                });
-              }}
-              label="Is it a daily task?"
-            />
-          </Tooltip>
-        </div>
-        {description ? <Tooltip content={description} /> : <></>}
-      </div>
-      <div className="flex justify-between gap-5">
-        <div className="flex w-full items-center">
-          <Input
+          <Checkbox
+            checked={isDaily}
             onChange={(e) => {
-              onUpdate({ isCompleted, name: e.target.value, isDaily, points });
+              onUpdate({
+                isCompleted,
+                name,
+                isDaily: e.target.checked,
+                points,
+              });
             }}
-            className="w-full"
-            value={name}
-            placeholder="Task name"
+            label="Is it a daily task?"
           />
-          <div className="w-32 ml-4">
-            <Input
-              type="number"
-              min={1}
-              value={points}
-              onChange={(e) => {
-                onUpdate({
-                  isCompleted,
-                  name,
-                  points: parseInt(e.target.value),
-                  isDaily,
-                });
-              }}
-            />
-          </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex gap-2">
+          {description ? <Tooltip content={description} /> : <></>}
           <Confirm
             message="Are you sure you want to delete this task?"
             onConfirm={() => {
@@ -104,7 +105,7 @@ const TaskItem = ({
             }}
             onCancel={() => console.log("Cancelled")}
           >
-            <IconButton className="p-2">
+            <IconButton className="p-1">
               <FaTrash className="text-xs" />
             </IconButton>
           </Confirm>

@@ -5,12 +5,12 @@ import HeaderSection from "@components/Home/HeaderSection";
 
 const Home = () => {
   return (
-    <div className="font-roboto p-4 h-screen">
+    <div className="font-roboto p-4 min-h-screen">
       <AddTaskSection />
-      <div className="mt-10">
+      <div className="mt-5">
         <HeaderSection />
       </div>
-      <div className="mt-10">
+      <div className="mt-5">
         <TaskListSection />
       </div>
     </div>
