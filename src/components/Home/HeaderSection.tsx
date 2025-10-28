@@ -37,8 +37,10 @@ const HeaderSection = () => {
         </Button>
         <Button
           onClick={() => {
-            finishedTasksAudio.play();
-            dispatch(submitTasks());
+            if (tasks.some((task) => task.isCompleted)) {
+              finishedTasksAudio.play();
+              dispatch(submitTasks());
+            }
           }}
         >
           Finished For The Day

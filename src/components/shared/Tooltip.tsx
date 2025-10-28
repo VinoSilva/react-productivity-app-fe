@@ -1,5 +1,5 @@
 // Import libraries
-import { useRef, useState, type JSX } from "react";
+import { useRef, useState, type JSX, type PropsWithChildren } from "react";
 import { FaInfo } from "react-icons/fa6";
 
 interface TooltipProps {
@@ -7,7 +7,11 @@ interface TooltipProps {
   position?: "top" | "bottom" | "left" | "right";
 }
 
-const Tooltip = ({ content, position = "top" }: TooltipProps) => {
+const Tooltip = ({
+  content,
+  position = "top",
+  children,
+}: PropsWithChildren<TooltipProps>) => {
   const [visible, setVisible] = useState(false);
   const timeoutRef = useRef<number | undefined>(0);
 
@@ -39,9 +43,13 @@ const Tooltip = ({ content, position = "top" }: TooltipProps) => {
       tabIndex={0} // allows keyboard focus
       className="relative inline-block"
     >
-      <div className="min-w-5 min-h-5 rounded-md bg-primary-black flex items-center justify-center">
-        <FaInfo className="text-xs text-white" />
-      </div>
+      {children ? (
+        children
+      ) : (
+        <div className="min-w-5 min-h-5 rounded-md bg-primary-black flex items-center justify-center">
+          <FaInfo className="text-xs text-white" />
+        </div>
+      )}
       {visible && (
         <div
           className={`absolute ${

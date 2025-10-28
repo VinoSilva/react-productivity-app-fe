@@ -6,6 +6,7 @@ type Task = {
   description: string;
   points: number;
   isCompleted: boolean;
+  isDaily: boolean;
 };
 
 export type TasksState = {
@@ -46,8 +47,13 @@ const tasksSlice = createSlice({
       state.tasks.forEach((task) => {
         if (task.isCompleted) {
           points += task.points;
-        } else {
-          nonCompletedTasks.push(task);
+        }
+
+        if (!task.isCompleted || task.isDaily) {
+          nonCompletedTasks.push({
+            ...task,
+            isCompleted: false,
+          });
         }
       });
 

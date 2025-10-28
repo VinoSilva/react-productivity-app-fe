@@ -14,10 +14,12 @@ interface TaskItemProps {
   points: number;
   description: string;
   isCompleted: boolean;
+  isDaily: boolean;
   onUpdate: (values: {
     points: number;
     isCompleted: boolean;
     name: string;
+    isDaily: boolean;
   }) => void;
 }
 
@@ -28,29 +30,49 @@ const TaskItem = ({
   description,
   onClickDelete,
   onUpdate,
+  isDaily,
 }: TaskItemProps) => {
   return (
     <div
       draggable
       className="w-full md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
     >
-      <div className="flex gap-4 justify-between">
-        {/* <div className="border rounded-full p-1 flex justify-center items-center cursor-pointer">
-          <div className="bg-primary-red p-2 rounded-full"></div>
-        </div> */}
-        <Checkbox
-          checked={isCompleted}
-          onChange={(e) => {
-            onUpdate({ isCompleted: e.target.checked, name, points });
-          }}
-        />
+      <div className="flex gap-4 justify-between items-start">
+        <div className="flex flex-col gap-4">
+          <Checkbox
+            checked={isCompleted}
+            onChange={(e) => {
+              onUpdate({
+                isCompleted: e.target.checked,
+                name,
+                isDaily,
+                points,
+              });
+            }}
+            label="Complete"
+          />
+          <Tooltip content={"Is it a daily task"}>
+            <Checkbox
+              checked={isDaily}
+              onChange={(e) => {
+                onUpdate({
+                  isCompleted,
+                  name,
+                  isDaily: e.target.checked,
+                  points,
+                });
+              }}
+              label="Is it a daily task?"
+            />
+          </Tooltip>
+        </div>
         {description ? <Tooltip content={description} /> : <></>}
       </div>
       <div className="flex justify-between gap-5">
         <div className="flex w-full items-center">
           <Input
             onChange={(e) => {
-              onUpdate({ isCompleted, name: e.target.value, points });
+              onUpdate({ isCompleted, name: e.target.value, isDaily, points });
             }}
             className="w-full"
             value={name}
@@ -66,6 +88,7 @@ const TaskItem = ({
                   isCompleted,
                   name,
                   points: parseInt(e.target.value),
+                  isDaily,
                 });
               }}
             />

@@ -43,7 +43,7 @@ const TaskListSection = () => {
 
   return (
     <div className="w-full flex flex-col gap-10 items-center">
-      {tasks.map(({ name, points, description, id, isCompleted }) => {
+      {tasks.map(({ name, points, description, id, isCompleted, isDaily }) => {
         return (
           <div
             key={id}
@@ -61,6 +61,7 @@ const TaskListSection = () => {
               onClickDelete={() => {
                 dispatch(removeTask(id));
               }}
+              isDaily={isDaily}
               onUpdate={(values) => {
                 if (isCompleted !== values.isCompleted && values.isCompleted) {
                   completeTaskAudio.play();

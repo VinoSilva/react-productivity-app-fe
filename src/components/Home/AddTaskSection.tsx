@@ -26,6 +26,7 @@ const AddTaskSection = () => {
     name,
     points,
     description,
+    isDaily,
   }) => {
     dispatch(
       addTask({
@@ -34,6 +35,7 @@ const AddTaskSection = () => {
         isCompleted: false,
         name,
         points,
+        isDaily,
       })
     );
 

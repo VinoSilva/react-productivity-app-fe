@@ -6,11 +6,13 @@ import Button from "@components/shared/Button";
 import FormItem from "@components/shared/FormItem";
 import Input from "@components/shared/Input";
 import TextArea from "@components/shared/TextArea";
+import { Checkbox } from "@components/shared/Checkbox";
 
 type TaskFormValues = {
   name: string;
   points: number;
   description: string;
+  isDaily: boolean;
 };
 
 interface TaskFormProps {
@@ -22,6 +24,7 @@ const defaultValues: TaskFormValues = {
   name: "",
   points: 1,
   description: "",
+  isDaily: false,
 };
 
 const TaskForm = ({ onSubmit, initialValues }: TaskFormProps) => {
@@ -64,6 +67,16 @@ const TaskForm = ({ onSubmit, initialValues }: TaskFormProps) => {
                     {...field}
                   />
                 </FormItem>
+              )}
+            </FastField>
+            <FastField name="isDaily">
+              {({ field }: FieldProps) => (
+                <Checkbox
+                  className="mb-4"
+                  label="Is it a daily task"
+                  {...field}
+                  checked={field.value}
+                />
               )}
             </FastField>
             <Button
