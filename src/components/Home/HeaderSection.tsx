@@ -25,7 +25,7 @@ const HeaderSection = () => {
     <div className="flex flex-col items-center w-full">
       <p className="font-roboto text-3xl font-semibold">
         <span className="text-primary-red">{points}</span>{" "}
-        {points > 1 ? "Points" : "Point"}{" "}
+        {points > 1 ? "Points" : "Point"} Today
       </p>
       <div className="flex gap-4 mt-5">
         <Button

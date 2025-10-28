@@ -6,15 +6,13 @@ import HeaderSection from "@components/Home/HeaderSection";
 // Smooth drag
 // Right click to go back to position
 // Filter at the top for not completed
-// Break word instead of all
-// Change from 20 points to 20 points today
-// Make pin not get squished when watching in small screen
 // Write test for reducer
 // Make no outline for the number input (variant)
 // Scroll smooth when dragging (Maybe click to select)
 // Make add task a floating button (A plus button only)
 // Memoize and optimize the list
 // Refactor code (Where do points calculation logic go?)
+// The ring makes a slight shift when the input is selected
 
 const Home = () => {
   return (
