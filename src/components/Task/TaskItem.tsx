@@ -35,7 +35,7 @@ const TaskItem = ({
   return (
     <div
       draggable
-      className="w-full md:min-w-xs md:max-w-md shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
+      className="w-full md:min-w-xs md:max-w-xs shadow-md shadow-primary-black rounded-md border p-4 flex flex-col gap-3"
     >
       <div className="flex justify-between gap-5">
         <div className="flex w-full items-center">

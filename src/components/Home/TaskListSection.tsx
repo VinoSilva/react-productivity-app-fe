@@ -42,7 +42,7 @@ const TaskListSection = () => {
   };
 
   return (
-    <div className="w-full flex flex-wrap gap-4 items-center">
+    <div className="w-full flex flex-col gap-4 items-center">
       {tasks.map(({ name, points, description, id, isCompleted, isDaily }) => {
         return (
           <div
