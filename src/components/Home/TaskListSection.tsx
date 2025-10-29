@@ -1,5 +1,5 @@
 // Import libraries
-import { useState } from "react";
+import React, { useMemo, useState, type ComponentProps } from "react";
 
 // Import store
 import TaskItem from "@components/Task/TaskItem";
@@ -8,11 +8,19 @@ import TaskItem from "@components/Task/TaskItem";
 import { removeTask, updateTask, updateTasks } from "@store/slices/taskSlices";
 
 import { useAppDispatch, useAppSelector } from "@store/index";
+import TaskListFilter from "./TaskListFilter";
 
 const TaskListSection = () => {
   const { tasks } = useAppSelector((state) => state.tasks);
 
   const dispatch = useAppDispatch();
+
+  const [filter, setFilter] = useState<
+    ComponentProps<typeof TaskListFilter>["filter"]
+  >({
+    showDailyTasks: false,
+    taskType: "all",
+  });
 
   const [completeTaskAudio] = useState(new Audio("/audio/coin.wav"));
 
@@ -41,38 +49,68 @@ const TaskListSection = () => {
     setDraggingId(null);
   };
 
-  return (
-    <div className="w-full flex flex-col gap-4 items-center">
-      {tasks.map(({ name, points, description, id, isCompleted, isDaily }) => {
-        return (
-          <div
-            key={id}
-            draggable
-            onDragStart={() => handleDragStart(id)}
-            onDragOver={(e) => handleDragOver(e, id)}
-            onDragEnd={handleDragEnd}
-          >
-            <TaskItem
-              key={id}
-              description={description}
-              name={name}
-              points={points}
-              isCompleted={isCompleted}
-              onClickDelete={() => {
-                dispatch(removeTask(id));
-              }}
-              isDaily={isDaily}
-              onUpdate={(values) => {
-                if (isCompleted !== values.isCompleted && values.isCompleted) {
-                  completeTaskAudio.play();
-                }
+  const filteredTasks = useMemo(() => {
+    let arr = tasks || [];
 
-                dispatch(updateTask({ description, id, ...values }));
-              }}
-            />
-          </div>
-        );
-      })}
+    // Daily filter
+    if (filter?.showDailyTasks) {
+      arr = arr.filter((task) => {
+        return task.isDaily;
+      });
+    }
+
+    if (filter?.taskType === "complete") {
+      arr = arr.filter((task) => {
+        return task.isCompleted;
+      });
+    } else if (filter?.taskType === "incomplete") {
+      arr = arr.filter((task) => {
+        return !task.isCompleted;
+      });
+    }
+
+    return arr;
+  }, [filter, tasks]);
+
+  return (
+    <div className="w-full flex flex-col gap-4 items-center justify-start">
+      <TaskListFilter onChangeFilter={setFilter} filter={filter} />
+      {filteredTasks.map(
+        ({ name, points, description, id, isCompleted, isDaily }) => {
+          return (
+            <div
+              key={id}
+              draggable
+              onDragStart={() => handleDragStart(id)}
+              onDragOver={(e) => handleDragOver(e, id)}
+              onDragEnd={handleDragEnd}
+              className="w-full flex justify-center"
+            >
+              <TaskItem
+                key={id}
+                description={description}
+                name={name}
+                points={points}
+                isCompleted={isCompleted}
+                onClickDelete={() => {
+                  dispatch(removeTask(id));
+                }}
+                isDaily={isDaily}
+                onUpdate={(values) => {
+                  if (
+                    isCompleted !== values.isCompleted &&
+                    values.isCompleted
+                  ) {
+                    completeTaskAudio.play();
+                  }
+
+                  dispatch(updateTask({ description, id, ...values }));
+                }}
+              />
+            </div>
+          );
+        }
+      )}
     </div>
   );
 };

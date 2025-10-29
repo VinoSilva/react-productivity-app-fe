@@ -7,7 +7,7 @@ const TextArea = ({
   return (
     <textarea
       className={twMerge([
-        "w-full border placeholder-gray-300 border-primary-black rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-black focus:border-0",
+        "w-full border placeholder-gray-300 border-primary-black rounded-lg px-3 py-2 outline-0",
         className || "",
       ])}
       {...props}

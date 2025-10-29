@@ -17,18 +17,18 @@ const FormItem = ({
   showError = true,
 }: PropsWithChildren<FormItemProps>) => {
   return (
-    <div className={twMerge(["flex flex-col gap-1", className || ""])}>
+    <div className={twMerge(["flex flex-col ", className || ""])}>
       {label && (
         <label className="text-sm font-lora font-medium text-gray-700 dark:text-gray-200">
           {label}
         </label>
       )}
 
-      <div className="relative">{children}</div>
+      <div className={"relative"}>{children}</div>
 
       <p
         style={{ display: showError ? "initial" : "none" }}
-        className="text-sm text-red-500 mt-1 h-4"
+        className="text-sm text-red-500 h-4"
       >
         {error}
       </p>
