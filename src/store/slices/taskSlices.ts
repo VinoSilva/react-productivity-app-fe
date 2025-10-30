@@ -29,12 +29,17 @@ const tasksSlice = createSlice({
     removeTask: (state, action: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
     },
-    updateTask: (state, action: PayloadAction<Task>) => {
+    updateTask: (state, action: PayloadAction<Partial<Task>>) => {
       const index = state.tasks.findIndex(
         (task) => task.id === action.payload.id
       );
       if (index !== -1) {
-        state.tasks[index] = action.payload;
+        const task: Task = { ...state.tasks[index] };
+
+        state.tasks[index] = {
+          ...task,
+          ...action.payload,
+        };
       }
     },
     clearAllTasks: (state) => {

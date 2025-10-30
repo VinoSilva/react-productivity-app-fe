@@ -1,19 +1,18 @@
-import FormItem from "@components/shared/FormItem";
-
-// Import Item
-import { Checkbox } from "@components/shared/Checkbox";
-import Select from "@components/shared/Select";
+// Import libraries
 import { FastField, Formik, type FieldProps } from "formik";
 import { useEffect } from "react";
+
+// Import components
+import { Checkbox } from "@components/shared/Checkbox";
+import Select from "@components/shared/Select";
+import FormItem from "@components/shared/FormItem";
+
+// Import cconstants
+import { defaultFilterValues } from "./TaskListFilter.constants";
 
 export type FilterFormValues = {
   showDailyTasks: boolean;
   taskType: "all" | "complete" | "incomplete";
-};
-
-const defaultValues: FilterFormValues = {
-  showDailyTasks: true,
-  taskType: "all",
 };
 
 interface TaskListFilter {
@@ -38,17 +37,14 @@ const FormEffect = ({
 
 const TaskListFilter = ({
   onChangeFilter,
-  filter = defaultValues,
+  filter = defaultFilterValues,
 }: TaskListFilter) => {
   return (
     <Formik initialValues={filter} onSubmit={() => {}}>
-      {(form) => {
+      {({ setFieldValue, values }) => {
         return (
           <>
-            <FormEffect
-              formValues={form.values}
-              onChangeFilter={onChangeFilter}
-            />
+            <FormEffect formValues={values} onChangeFilter={onChangeFilter} />
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -59,7 +55,9 @@ const TaskListFilter = ({
                 {({ field }: FieldProps) => (
                   <Checkbox
                     label="Show Daily Task Only"
-                    {...field}
+                    onChange={(e) =>
+                      setFieldValue("showDailyTasks", e.target.checked)
+                    }
                     checked={field.value}
                   />
                 )}
@@ -76,7 +74,7 @@ const TaskListFilter = ({
                       ]}
                       value={field.value}
                       onChange={(newVal) => {
-                        form.setFieldValue("taskType", newVal);
+                        setFieldValue("taskType", newVal);
                       }}
                     />
                   </FormItem>

@@ -1,26 +1,28 @@
 // Import libraries
-import React, { useMemo, useState, type ComponentProps } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+  type ComponentProps,
+} from "react";
 
 // Import store
 import TaskItem from "@components/Task/TaskItem";
 
 // Import redux
 import { removeTask, updateTask, updateTasks } from "@store/slices/taskSlices";
-
 import { useAppDispatch, useAppSelector } from "@store/index";
-import TaskListFilter from "./TaskListFilter";
+
+// Import component
+import TaskListFilter, { type FilterFormValues } from "./TaskListFilter";
+import { defaultFilterValues } from "./TaskListFilter.constants";
 
 const TaskListSection = () => {
   const { tasks } = useAppSelector((state) => state.tasks);
 
   const dispatch = useAppDispatch();
 
-  const [filter, setFilter] = useState<
-    ComponentProps<typeof TaskListFilter>["filter"]
-  >({
-    showDailyTasks: false,
-    taskType: "all",
-  });
+  const [filter, setFilter] = useState<FilterFormValues>(defaultFilterValues);
 
   const [completeTaskAudio] = useState(new Audio("/audio/coin.wav"));
 
@@ -50,27 +52,34 @@ const TaskListSection = () => {
   };
 
   const filteredTasks = useMemo(() => {
-    let arr = tasks || [];
+    return tasks.filter((task) => {
+      if (filter.showDailyTasks && !task.isDaily) return false;
 
-    // Daily filter
-    if (filter?.showDailyTasks) {
-      arr = arr.filter((task) => {
-        return task.isDaily;
-      });
-    }
+      if (filter.taskType === "complete" && task.isCompleted) return true;
+      else if (filter.taskType === "incomplete" && !task.isCompleted)
+        return true;
 
-    if (filter?.taskType === "complete") {
-      arr = arr.filter((task) => {
-        return task.isCompleted;
-      });
-    } else if (filter?.taskType === "incomplete") {
-      arr = arr.filter((task) => {
-        return !task.isCompleted;
-      });
-    }
-
-    return arr;
+      return true;
+    });
   }, [filter, tasks]);
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      dispatch(removeTask(id));
+    },
+    [dispatch]
+  );
+
+  const handleUpdate = useCallback<ComponentProps<typeof TaskItem>["onUpdate"]>(
+    ({ id, values }) => {
+      if (values.isCompleted) {
+        completeTaskAudio.play();
+      }
+
+      dispatch(updateTask({ id, ...values }));
+    },
+    [dispatch, completeTaskAudio]
+  );
 
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-start">
@@ -81,31 +90,24 @@ const TaskListSection = () => {
             <div
               key={id}
               draggable
-              onDragStart={() => handleDragStart(id)}
-              onDragOver={(e) => handleDragOver(e, id)}
+              onDragStart={() => {
+                handleDragStart(id);
+              }}
+              onDragOver={(e) => {
+                handleDragOver(e, id);
+              }}
               onDragEnd={handleDragEnd}
               className="w-full flex justify-center"
             >
               <TaskItem
-                key={id}
                 description={description}
                 name={name}
                 points={points}
                 isCompleted={isCompleted}
-                onClickDelete={() => {
-                  dispatch(removeTask(id));
-                }}
+                onClickDelete={handleDelete}
                 isDaily={isDaily}
-                onUpdate={(values) => {
-                  if (
-                    isCompleted !== values.isCompleted &&
-                    values.isCompleted
-                  ) {
-                    completeTaskAudio.play();
-                  }
-
-                  dispatch(updateTask({ description, id, ...values }));
-                }}
+                onUpdate={handleUpdate}
+                id={id}
               />
             </div>
           );

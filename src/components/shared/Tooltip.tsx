@@ -34,6 +34,8 @@ const Tooltip = ({
     right: "left-full top-1/2 -translate-y-1/2 ml-1",
   };
 
+  if (!content) return null;
+
   return (
     <div
       onMouseEnter={showTooltip}

@@ -40,14 +40,15 @@ const AddTaskSection = () => {
     [dispatch, handleCloseModal]
   );
 
-  const pointsLabel = `${points} ${points > 1 ? "Points" : "Point"}`;
+  const pointsLabel = `${points > 1 ? "Points" : "Point"}`;
 
   return (
-    <div className="flex justify-end items-center-safe gap-4">
-      <p className="text-primary-red">{pointsLabel}</p>
-
+    <div className="flex justify-end items-center-safe gap-4 px-2 pt-4">
+      <p className="text-primary-black text-lg font-roboto">
+        <span className="text-primary-red">{points}</span> {pointsLabel}
+      </p>
       <IconButton
-        className="p-2 bg-primary-red border-primary-red text-lg hover:bg-white hover:text-primary-red fixed bottom-10"
+        className="p-2 bg-primary-red border-primary-red text-lg hover:bg-white hover:text-primary-red fixed bottom-10 right-2"
         onClick={toggleModal}
       >
         <FaPlus />

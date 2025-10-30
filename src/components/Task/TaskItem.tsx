@@ -1,6 +1,7 @@
 // Import libraries
 import { FaTrash } from "react-icons/fa6";
 import { MdPushPin, MdOutlinePushPin } from "react-icons/md";
+import { memo } from "react";
 
 // Import components
 import IconButton from "@components/shared/IconButton";
@@ -18,16 +19,18 @@ type TUpdateValue = {
 };
 
 interface TaskItemProps {
+  id: string;
   name: string;
-  onClickDelete?: () => void;
+  onClickDelete?: (id: string) => void;
   points: number;
   description: string;
   isCompleted: boolean;
   isDaily: boolean;
-  onUpdate: (values: TUpdateValue) => void;
+  onUpdate: (val: { id: string; values: TUpdateValue }) => void;
 }
 
 const TaskItem = ({
+  id,
   name,
   points,
   isCompleted,
@@ -38,15 +41,18 @@ const TaskItem = ({
 }: TaskItemProps) => {
   const handleUpdate = (updates: Partial<TUpdateValue>) => {
     onUpdate({
-      name,
-      points,
-      isCompleted,
-      isDaily,
-      ...updates,
+      id,
+      values: {
+        name,
+        points,
+        isCompleted,
+        isDaily,
+        ...updates,
+      },
     });
   };
 
-  const elem = (
+  return (
     <div
       className={`w-full md:min-w-md md:max-w-md shadow-md shadow-primary-black ${
         isCompleted ? "bg-primary-red" : "bg-white"
@@ -72,6 +78,7 @@ const TaskItem = ({
               </span>
             </Tooltip>
           </div>
+          <Tooltip content={description} />
           <p
             className={`w-full break-all wrap-break-word ${
               isCompleted ? "text-white" : "text-primary-black"
@@ -98,7 +105,7 @@ const TaskItem = ({
               message="Are you sure you want to delete this task?"
               onConfirm={() => {
                 if (onClickDelete) {
-                  onClickDelete();
+                  onClickDelete(id);
                 }
               }}
               onCancel={() => console.log("Cancelled")}
@@ -112,10 +119,6 @@ const TaskItem = ({
       </div>
     </div>
   );
-
-  if (!description) return elem;
-
-  return <Tooltip content={description}>{elem}</Tooltip>;
 };
 
-export default TaskItem;
+export default memo(TaskItem);
