@@ -14,11 +14,18 @@ type Option = {
 interface OptionProps {
   options: Option[];
   style?: React.CSSProperties;
+  labelStyle?: React.CSSProperties;
   value: string | number;
   onChange: (val: string | number) => void;
 }
 
-const Select = ({ options, style, onChange, value }: OptionProps) => {
+const Select = ({
+  options,
+  style,
+  onChange,
+  value,
+  labelStyle = {},
+}: OptionProps) => {
   const { val, toggle } = useBoolean();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -50,7 +57,7 @@ const Select = ({ options, style, onChange, value }: OptionProps) => {
       ref={ref}
       className="relative flex justify-between items-center cursor-pointer px-2 py-1 rounded-md border-primary-black border-[0.5px] gap-2"
     >
-      <p>{label}</p>
+      <p style={labelStyle}>{label}</p>
       <FaChevronDown className="text-primary-black" />
       {val ? (
         <div className="absolute top-full rounded-md left-0 w-full bg-white border-[0.5px] z-10 mt-2  overflow-hidden">

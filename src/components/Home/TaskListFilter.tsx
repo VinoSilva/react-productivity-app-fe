@@ -76,6 +76,11 @@ const TaskListFilter = ({
                       onChange={(newVal) => {
                         setFieldValue("taskType", newVal);
                       }}
+                      labelStyle={{
+                        minWidth: 100,
+                        maxWidth: 100,
+                        overflow: "hidden",
+                      }}
                     />
                   </FormItem>
                 )}
