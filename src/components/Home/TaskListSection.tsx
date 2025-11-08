@@ -53,7 +53,7 @@ const TaskListSection = () => {
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
-      if (filter.showDailyTasks && !task.isDaily) return false;
+      if (filter.taskType === "all") return true;
 
       if (filter.taskType === "complete" && task.isCompleted) return true;
       else if (filter.taskType === "incomplete" && !task.isCompleted)
