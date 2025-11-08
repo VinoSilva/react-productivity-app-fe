@@ -56,7 +56,7 @@ const TaskItem = ({
     <div
       className={`w-full md:min-w-md md:max-w-md shadow-md shadow-primary-black ${
         isCompleted ? "bg-primary-red" : "bg-white"
-      } cursor-pointer rounded-md border p-4 flex flex-col gap-3 relative`}
+      } cursor-pointer rounded-md border p-2 flex flex-col gap-3 relative`}
     >
       <div className="absolute  text-primary-red z-10 ml-5 left-full top-1/2 -translate-y-1/2">
         <Checkbox
