@@ -53,7 +53,7 @@ const Select = ({ options, style, onChange, value }: OptionProps) => {
       <p>{label}</p>
       <FaChevronDown className="text-primary-black" />
       {val ? (
-        <div className="absolute top-full rounded-md left-0 w-full bg-white border-[0.5px] z-10 mt-2">
+        <div className="absolute top-full rounded-md left-0 w-full bg-white border-[0.5px] z-10 mt-2  overflow-hidden">
           {options.map(({ label, value, id }) => (
             <div
               key={id}
@@ -62,6 +62,7 @@ const Select = ({ options, style, onChange, value }: OptionProps) => {
                 toggle();
               }}
               className="cursor-pointer hover:bg-primary-red hover:opacity-35  p-2"
+              title={label as string}
             >
               {label}
             </div>

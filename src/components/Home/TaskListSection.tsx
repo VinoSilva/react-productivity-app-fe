@@ -59,7 +59,7 @@ const TaskListSection = () => {
       else if (filter.taskType === "incomplete" && !task.isCompleted)
         return true;
 
-      return true;
+      return false;
     });
   }, [filter, tasks]);
 
